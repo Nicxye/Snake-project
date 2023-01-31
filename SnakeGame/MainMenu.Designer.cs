@@ -74,7 +74,10 @@
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.lblSnake);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "MainMenu";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MainMenu";
             this.ResumeLayout(false);
             this.PerformLayout();

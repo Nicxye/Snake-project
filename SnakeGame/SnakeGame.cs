@@ -18,7 +18,7 @@ namespace SnakeGame
         {
             InitializeComponent();
 
-            map = new Map(pbxMap);
+            map = new Map(pbxMap, lblScoreAmount);
         }
 
         private void SnakeGame_Load(object sender, EventArgs e)
@@ -30,6 +30,18 @@ namespace SnakeGame
         {
             map.Next();
             map.ShowElements();
+        }
+
+        private void SnakeGame_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Up)
+                map.CurrentDirection = Map.Direction.Up;
+            if (e.KeyCode == Keys.Left)
+                map.CurrentDirection = Map.Direction.Left;
+            if (e.KeyCode == Keys.Down)
+                map.CurrentDirection = Map.Direction.Down;
+            if (e.KeyCode == Keys.Right)
+                map.CurrentDirection = Map.Direction.Right;
         }
     }
 }
