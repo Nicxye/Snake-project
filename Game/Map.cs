@@ -46,44 +46,55 @@ namespace Game
             if (food == null)
                 GetFood();
 
+            GetHistorySnakeMovement();
+
             switch(CurrentDirection)
             {
                 case Direction.Right:
                     {
-                        if (snake[0].X == (lengthMap - 1))
-                            Death();
-                        else
-                            snake[0].X++;
+                        snake[0].X++;
                         break;
                     }
                 case Direction.Left:
                     {
-                        if (snake[0].X == 0)
-                            Death();
-                        else
-                            snake[0].X--;
+                        snake[0].X--;
                         break;
                     }
                 case Direction.Up:
                     {
-                        if (snake[0].Y == 0)
-                            Death();
-                        else
-                            snake[0].Y--;
+                        snake[0].Y--;
                         break;
                     }
                 case Direction.Down:
                     {
-                        if (snake[0].Y == (heightMap - 1))
-                            Death();
-                        else
-                            snake[0].Y++;
+                        snake[0].Y++;
                         break;
                     }
             }
 
+            GetNextSnakeMovement();
+
             Eating();
 
+        }
+
+        private void GetNextSnakeMovement()
+        {
+            if (snake.Count > 1)
+                for (int i = 1; i < snake.Count; i++)
+                {
+                    snake[i].X = snake[i - 1].formerX;
+                    snake[i].Y = snake[i - 1].formerY;
+                }
+        }
+
+        private void GetHistorySnakeMovement()
+        {
+            foreach (var square in snake)
+            {
+                square.formerX = square.X;
+                square.formerY = square.Y;
+            }
         }
 
         private void Eating()
@@ -92,6 +103,11 @@ namespace Game
             {
                 food = null;
                 score++;
+
+                //Add new element to the snake.
+                Snake lastBodyPart = snake[snake.Count - 1];
+                Snake newBodyPart = new Snake(lastBodyPart.formerX, lastBodyPart.formerY);
+                snake.Add(newBodyPart);
             }
         }
 
@@ -103,14 +119,22 @@ namespace Game
             food = new Food(X, Y);
         }
 
-        private void Death()
+        public bool Death()
         {
-            Reset();
+            foreach (var body in snake)
+            {
+                if (snake.Where(element => element.X == body.X && element.Y == body.Y && body != element).Count() > 0) //Checks if there is at least one part of the Snake
+                    return true;                                                                                       //touching its body.
+                if (snake[0].X == 0 || snake[0].X == (lengthMap - 1) || snake[0].Y == 0 || snake[0].Y == (heightMap - 1))
+                    return true;                                                                                            
+            }
+            return false;
         }   
 
         public void Reset()
         {
             score = 0;
+            food = null;
             snake = new List<Snake>();
             Snake head = new Snake(InitialPositionX, InitialPositionY);
             snake.Add(head);

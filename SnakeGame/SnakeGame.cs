@@ -28,8 +28,32 @@ namespace SnakeGame
 
         private void gameTimer_Tick(object sender, EventArgs e)
         {
-            map.Next();
-            map.ShowElements();
+            try
+            {
+                if (!map.Death())
+                {
+                    map.Next();
+                    map.ShowElements();
+                }
+                else
+                {
+                    gameTimer.Stop();
+                    DialogResult restart = MessageBox.Show("Game over. Your score is: " + lblScoreAmount.Text + "\r\nRestart?", "You lost", MessageBoxButtons.YesNo);
+                    if (restart == DialogResult.Yes)
+                    {
+                        map.Reset();
+                        gameTimer.Start();
+                    }
+                }
+
+                if ((int.Parse(lblScoreAmount.Text) % 5 == 0) && ((gameTimer.Interval - 5) > 0))
+                    gameTimer.Interval -= 5;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         private void SnakeGame_KeyDown(object sender, KeyEventArgs e)
@@ -42,6 +66,9 @@ namespace SnakeGame
                 map.CurrentDirection = Map.Direction.Down;
             if (e.KeyCode == Keys.Right)
                 map.CurrentDirection = Map.Direction.Right;
+
+            if (e.KeyCode == Keys.Back) //Temporary
+                lblScoreAmount.Text += 5;
         }
     }
 }

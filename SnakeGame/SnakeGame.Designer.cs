@@ -38,7 +38,6 @@
             // 
             // gameTimer
             // 
-            this.gameTimer.Interval = 1;
             this.gameTimer.Tick += new System.EventHandler(this.gameTimer_Tick);
             // 
             // pbxMap
