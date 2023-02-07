@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Game
 {
     public class Map
     {
-        public int scale = 10;
-        public int lengthMap = 90;
-        public int heightMap = 60;
+        public int scale = 20;
+        public int lengthMap = 45;
+        public int heightMap = 30;
         private int[,] squares;
         private List<Snake> snake;
 
@@ -52,7 +50,7 @@ namespace Game
             {
                 case Direction.Right:
                     {
-                        snake[0].X++;
+                        snake[0].X++;                        
                         break;
                     }
                 case Direction.Left:
@@ -77,7 +75,6 @@ namespace Game
             Eating();
 
         }
-
         private void GetNextSnakeMovement()
         {
             if (snake.Count > 1)
@@ -125,7 +122,7 @@ namespace Game
             {
                 if (snake.Where(element => element.X == body.X && element.Y == body.Y && body != element).Count() > 0) //Checks if there is at least one part of the Snake
                     return true;                                                                                       //touching its body.
-                if (snake[0].X == 0 || snake[0].X == (lengthMap - 1) || snake[0].Y == 0 || snake[0].Y == (heightMap - 1))
+                if (snake[0].X == 0 || snake[0].X == (lengthMap - 1) || snake[0].Y == 0 || snake[0].Y == (heightMap - 1))   //Checks if Snake touched an edge.
                     return true;                                                                                            
             }
             return false;
@@ -159,11 +156,20 @@ namespace Game
                 for (int i = 0; i < lengthMap; i++)
                 {
                     if (snake.Where(element => element.X == i && element.Y == j).Count() > 0)
+                    {
                         PaintPixel(bmp, i, j, Color.DarkOliveGreen);
+
+                        if (Death())
+                        {
+                            PaintPixel(bmp, i, j, Color.Gray);
+                            PaintPixel(bmp, snake[0].X, snake[0].Y, Color.Gray);
+                        }
+                    }
                     else
                         PaintPixel(bmp, i, j, Color.DarkSeaGreen);
-                }       
+                }
             }
+
 
             //Show the food.
             if (food != null)

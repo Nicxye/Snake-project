@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SnakeGame));
             this.gameTimer = new System.Windows.Forms.Timer(this.components);
             this.pbxMap = new System.Windows.Forms.PictureBox();
             this.lblScore = new System.Windows.Forms.Label();
@@ -76,6 +77,7 @@
             this.Controls.Add(this.lblScore);
             this.Controls.Add(this.pbxMap);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.Name = "SnakeGame";
